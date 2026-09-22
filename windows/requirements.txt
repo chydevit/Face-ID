@@ -1,0 +1,5 @@
+# Windows face recognition engine.
+# Python 3.10+ (the CI builder pins 3.11).
+onnxruntime>=1.16
+opencv-python-headless>=4.8
+numpy>=1.24

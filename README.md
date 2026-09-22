@@ -46,6 +46,17 @@ https://github.com/user-attachments/assets/77438826-80a9-4ab2-9fc3-42407a2d0adb
 > 
 > Glance is a convenience feature, not a security upgrade. Only continue if you accept the tradeoff.
 
+## Windows
+
+A Windows face-recognition engine lives in [`windows/`](windows/README.md). It reuses this
+project's ArcFace weights and alignment template, with SCRFD standing in for Apple's Vision.
+
+It **recognizes** a face; it does not yet log you into Windows — that needs a COM Credential
+Provider DLL, which is not written. macOS's password-typing trick cannot be reused there: LogonUI
+runs on a separate secure desktop that rejects synthetic input. Its liveness detection is also
+weaker than the Mac build's (no blink cue). Read [windows/README.md](windows/README.md) before
+relying on it.
+
 ## Installation
 
 **Requirements:**

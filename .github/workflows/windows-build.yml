@@ -1,0 +1,76 @@
+name: Build Windows exe
+
+# There is no Windows machine in the loop here, so the .exe is built by a
+# GitHub-hosted windows runner. The job also runs the offline selftest ON
+# WINDOWS, so the binary that gets published has been shown to detect, align
+# and embed a face on the platform it ships for.
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag to upload the exe to (blank = artifact only)"
+        required: false
+        default: ""
+  push:
+    tags:
+      - "windows-v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        working-directory: windows
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt pyinstaller
+
+      - name: Fetch a test face
+        working-directory: windows
+        run: |
+          curl -sL -o lena.jpg https://raw.githubusercontent.com/opencv/opencv/master/samples/data/lena.jpg
+          curl -sL -o messi5.jpg https://raw.githubusercontent.com/opencv/opencv/master/samples/data/messi5.jpg
+
+      - name: Selftest on Windows (source)
+        working-directory: windows
+        run: python -m faceid selftest lena.jpg messi5.jpg
+
+      - name: Build exe
+        working-directory: windows
+        run: >
+          pyinstaller --onefile --name faceid
+          --collect-binaries onnxruntime
+          --collect-data onnxruntime
+          run_faceid.py
+
+      - name: Selftest on Windows (packaged exe)
+        working-directory: windows
+        run: |
+          .\dist\faceid.exe selftest lena.jpg messi5.jpg
+          .\dist\faceid.exe list
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: faceid-windows-exe
+          path: windows/dist/faceid.exe
+          if-no-files-found: error
+
+      - name: Attach to release
+        if: ${{ github.event.inputs.tag != '' || startsWith(github.ref, 'refs/tags/') }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          TAG="${{ github.event.inputs.tag }}"
+          [ -z "$TAG" ] && TAG="${GITHUB_REF#refs/tags/}"
+          gh release upload "$TAG" windows/dist/faceid.exe --clobber --repo "$GITHUB_REPOSITORY"
