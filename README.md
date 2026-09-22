@@ -1,12 +1,21 @@
 <h1 align="center">
   <br>
-  <a href="https://tryglance.app"><img src="glance/Assets.xcassets/appicon.imageset/appicon.png" alt="Glance" width="150"></a>
+  <a href="https://github.com/jonnyoo/glance"><img src="Face ID/Assets.xcassets/appicon.imageset/appicon.png" alt="Glance" width="150"></a>
   <br>
-  Glance
+  Face ID
   <br>
 </h1>
 
 <h3 align="center">Face unlock for your Mac</h3>
+
+> **A fork of [jonnyoo/glance](https://github.com/jonnyoo/glance)** by Jonathan Zhou, renamed and
+> rebuilt under the bundle id `com.chydevit.faceid`. All original work and credit are his; this fork
+> is MIT-licensed under the same terms (see [LICENSE](LICENSE)).
+>
+> **Downloads here are unsigned and un-notarized.** macOS Gatekeeper will refuse to open the app
+> until you clear the quarantine flag yourself. If you want a signed, notarized build, get it from
+> [the original project](https://github.com/jonnyoo/glance/releases) instead.
+
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-black.svg" alt="MIT License"></a>
@@ -43,9 +52,14 @@ https://github.com/user-attachments/assets/77438826-80a9-4ab2-9fc3-42407a2d0adb
 - macOS 15 Sequoia or later
 - Apple Silicon or Intel Mac
 
-<a href="https://github.com/jonnyoo/glance/releases/latest/download/Glance.dmg" target="_self"><img width="200" src="https://github.com/user-attachments/assets/cdb8af97-1ee2-4669-b7cb-dcfb56c9dd61" alt="Download for Mac" /></a>
+<a href="https://github.com/chydevit/Face-ID/releases/latest/download/Face-ID.dmg" target="_self"><img width="200" src="https://github.com/user-attachments/assets/cdb8af97-1ee2-4669-b7cb-dcfb56c9dd61" alt="Download for Mac" /></a>
 
-Open the `.dmg` file and drag Glance to `/Applications`, then open it.
+Open the `.dmg` file and drag **Face ID** to `/Applications`. Because the build is unsigned, the
+first launch is blocked — clear the quarantine flag first:
+
+```bash
+xattr -dr com.apple.quarantine "/Applications/Face ID.app"
+```
 
 
 ## Permissions

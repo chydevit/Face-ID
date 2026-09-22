@@ -1,6 +1,6 @@
 //
-//  glanceApp.swift
-//  glance
+//  FaceIDApp.swift
+//  Face ID
 //
 //  Created by Jonathan Zhou on 2026-07-21.
 //
@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct glanceApp: App {
+struct FaceIDApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
 
     /// Only reliable way to reopen a `Window` scene once its `NSWindow` has fully closed.
@@ -26,7 +26,7 @@ struct glanceApp: App {
         DispatchQueue.main.async {
             delegate.bindOpenWindowAction { open(id: "settings") }
         }
-        return Window("Glance Settings", id: "settings") {
+        return Window("Face ID Settings", id: "settings") {
             SettingsWindowView(environment: appDelegate.environment)
                 .onAppear {
                     delegate.bindOpenWindowAction { open(id: "settings") }
